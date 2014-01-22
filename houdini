@@ -1,0 +1,194 @@
+#!/bin/python
+'''
+Nikita Musatov
+not.a.whale [at] gmail.com
+Skype: notawhale
+Version:0.36
+03.12.2012
+Start write this muzzle
+04.12.2012
+Add support without choise version of Houdini
+Add user parameters for production
+08.12.2012
+Add non destructive parameter adding. If some parameterers exist muzzle only add new parameters.
+15.12.2012
+Add other init env like in source_houdini script. Add information about version of Houdini.
+22.12.2012
+Add temp environment.
+'''
+
+# Out debug information in Terminal
+DEBUG = True
+# Release version. If you don't write build then muzzle will start last installed build
+HOUDINI_MAJOR_RELEASE = 12
+HOUDINI_MINOR_RELEASE = 1
+HOUDINI_BUILD_VERSION = None#142
+# Flags for startup
+HOUDINI_DEFAULT_FLAG = ["-foreground"]
+# Install path and job path
+HOUDINI_INSTALL_PATH = "/opt"
+# $JOB - A custom variable that determines where your jobs are located.
+JOB = "/home/notawhale/Projects"
+
+#Houdini production folder
+HOUDINI_PROD_PATH = "$JOB/Library"
+
+'''User parameters for Houdini. If some parameter not need initialiaze comment it '''
+'''
+Replacing symbols when houdini starting:
+@	
+	Typically expands to the directories on the HOUDINI_PATH. So, if the HOUDINI_PATH is...
+	    $HIP
+	    $HFS/houdini
+	    $HOME/houdini
+	    
+	... then the value "@/vex" would expand to...
+	    $HIP/vex
+	    $HFS/houdini/vex
+	    $HOME/houdini/vex
+=	
+	Equivalent to $HIP: the path of the directory containing the current scene file.
+&	
+	The "default" path for the given variable. For example, to add a directory "/mypath" to the 
+	default path for a variable, use "/mypath;&;". This will search "/mypath" path first, then 
+	the directories on the default path.
+^	
+	For VEX-related variables, expands to the shader type (e.g. Surface, Displacement, Sop, etc.). 
+	For example, if HOUDINI_VEX_PATH is "$HOME/vex/^", when loading Surface shaders it will expand 
+	to "$HOME/vex/Surface".
+
+More info: http://www.sidefx.com/docs/houdini12.1/basics/config_env
+'''
+HOUDINI_PARAM = dict() #Don't comment this line
+HOUDINI_PARAM['HOUDINI_OTLSCAN_PATH'] = HOUDINI_PROD_PATH + "/otls:@/otls"
+HOUDINI_PARAM['HOUDINI_SCRIPT_PATH'] = HOUDINI_PROD_PATH + "/scripts:@/scripts"
+HOUDINI_PARAM['HOUDINI_DSO_PATH'] = HOUDINI_PROD_PATH + "/dso:@/dso"
+#HOUDINI_PARAM['HOUDINI_VEX_PATH'] = HOUDINI_PROD_PATH + "/vex^:@/vex/^"
+#HOUDINI_PARAM['HOUDINI_GALLERY_PATH'] = HOUDINI_PROD_PATH+"/gallery:@/gallery"
+#HOUDINI_PARAM['HOUDINI_UI_ICON_PATH'] = HOUDINI_PROD_PATH+"/icon:@/^"
+#HOUDINI_PARAM['HOUDINI_TOOLBAR_PATH'] = HOUDINI_PROD_PATH+"/toolbar:@/toolbar"
+
+'''Code'''
+import os,sys,subprocess,re
+
+def houdiniNameReturn(hdn): return hdn['base'] + hdn['major']+"."+hdn['minor']+"."+hdn['build']
+def pressEnter(): raw_input("Press Enter to continue")
+
+def someError(str):
+	'''Print error and then stop executing'''
+	print str
+	pressEnter()
+	sys.exit()
+
+def foundHoudiniInDir():
+	'''Return dict with Houdini directors'''
+	apps = []
+	for ver in os.listdir(HOUDINI_INSTALL_PATH):
+		if re.match(u"(hfs)([\d]{1,2})[.]([\d]{1})[.]([\d]{1,3})",ver):
+			m = re.match(u"(?P<base>[a-zA-Z]{0,3})(?P<major>[\d]{1,2})[.](?P<minor>[\d]{1})[.](?P<build>[\d]{1,3})",ver)
+			apsPrm = dict()
+			apsPrm['base'] = m.group('base')
+			apsPrm['major'] = m.group('major')
+			apsPrm['minor'] = m.group('minor')
+			apsPrm['build'] = m.group('build')
+			apps.append(apsPrm)
+	return apps
+
+def returnOnlyMax(mas,search):
+	'''Search max major/minor/build and return max indentifical major/minor/build'''
+	apps = [mas[0]]
+	for app in mas[1:]:
+		if apps[0][search] == app[search]:
+			apps.append(app)
+		elif app[search] > apps[0][search]:
+			apps = [app[search]]
+	return apps
+
+def getandCheckHoudiniBuild():
+	"""Founding houdini max build/release  if houdini version parameter is None"""
+	global HOUDINI_MAJOR_RELEASE
+	global HOUDINI_MINOR_RELEASE
+	global HOUDINI_BUILD_VERSION
+	apps = foundHoudiniInDir()
+	if HOUDINI_MAJOR_RELEASE != None and HOUDINI_MINOR_RELEASE != None and HOUDINI_BUILD_VERSION != None:
+		'''If all version is exist'''
+		HB = "%s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
+		for app in apps:
+			if re.match(HB,app['major']+"."+app['minor']+"."+app['build']):
+				return houdiniNameReturn(app)
+			else:
+				someError("Can`t found Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION))
+	elif HOUDINI_MAJOR_RELEASE and HOUDINI_MINOR_RELEASE != None and HOUDINI_BUILD_VERSION == None:
+		'''If haven`t only build parameter'''
+		max_app = apps[0]
+		for app in apps[1:]:
+			if max_app['build'] < app['build']:
+				max_app = app
+		HOUDINI_BUILD_VERSION = max_app['build']
+		return houdiniNameReturn(max_app)
+	elif HOUDINI_MAJOR_RELEASE == None and HOUDINI_MINOR_RELEASE == None and HOUDINI_BUILD_VERSION == None:
+		'''If haven`t information about version of Houdini'''
+		apps = returnOnlyMax(apps,'major')
+		apps = returnOnlyMax(apps,'minor')
+		apps = returnOnlyMax(apps,'build')
+		if len(apps) != 1:
+			someError("Something wrong!!! I found some indentifical Houdini application")
+		HOUDINI_MAJOR_RELEASE = apps['major']
+		HOUDINI_MINOR_RELEASE = apps['minor']
+		HOUDINI_BUILD_VERSION = apps['build']
+		return houdiniNameReturn(apps[0])
+	else:
+		someError("Sorry this isn't realized")
+
+def addEnv(params):
+	"""Add user parameters"""
+	for param in params:
+		if params[param] != None:
+			try:
+				os.environ[param] = os.path.pathsep.join([params[param],os.environ[param]])
+			except KeyError:
+				os.environ[param] = params[param]
+		if DEBUG:
+			print "$" + param + ": " + os.environ[param]
+# Inizialize $HFS
+HFS = "%s/%s"%(
+	HOUDINI_INSTALL_PATH,
+	getandCheckHoudiniBuild())
+os.environ["HFS"] = HFS
+
+# To environment $PATH and $HFS/bin path
+HB = HFS + '/bin'
+os.environ['PATH'] = os.path.pathsep.join(
+	[HB,os.environ['PATH']])
+
+# Other env
+os.environ["H"] = HFS
+os.environ["HB"] = os.path.join(HFS,"bin")
+os.environ['HDSO'] = os.path.join(HFS,"dso")
+os.environ['HD'] = os.path.join(HFS,"demo")
+os.environ['HH'] = os.path.join(HFS,"houdini")
+os.environ['HHC'] = os.path.join(os.environ['HH'],"config")
+os.environ['HT'] = os.path.join(HFS,"toolkit")
+os.environ['HSB'] = os.path.join(os.environ['HH'],"sbin")
+os.environ['TEMP'] = "/tmp"
+
+# Inizialize $JOB
+os.environ['JOB'] = JOB
+
+# Add Other Houdini Parameters
+addEnv(HOUDINI_PARAM)
+os.chdir(HFS)
+HOUDINI_START_COMMAND = ['%s/houdini'%HB] + HOUDINI_DEFAULT_FLAG + sys.argv[1:]
+
+'''Application Run'''
+if __name__ == '__main__':
+	print "Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
+	sub = subprocess.Popen(HOUDINI_START_COMMAND,stdout=subprocess.PIPE)
+	if DEBUG:
+		print "$HFS: " + HFS
+		print "$HB: " + HB
+		print "$JOB: " + JOB
+		print "Start Command: " + " ".join(HOUDINI_START_COMMAND)
+	if sub.wait() != 0:
+		'''If errot then print information it'''
+		pressEnter()

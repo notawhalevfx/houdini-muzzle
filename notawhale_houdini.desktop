@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Houdini FX
+GenericName=Houdini FX
+Comment=3D Animation Tools
+Exec=houdini %F
+Icon=houdini_logo.png
+Type=Application
+Terminal=true
+Encoding=UTF-8
+Categories=Graphics;
+Name[en_US]=notawhale_houdini.desktop
