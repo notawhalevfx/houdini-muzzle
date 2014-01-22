@@ -6,15 +6,17 @@ not.a.whale [at] gmail.com
 Skype: notawhale
 
 Changelog:
-	Version:0.36
+	Version:0.38
 	03.12.2012
 	Start write this muzzle
 	04.12.2012
 	Add support without choise version of Houdini
 	Add user parameters for production
 	08.12.2012
-	Add non destructive parameter adding. If some parameterers exist muzzle only add new parameters
+	Add non destructive parameter adding. If some parameterers exist muzzle only add new parameters.
 	15.12.2012
 	Add other init env like in source_houdini script. Add information about version of Houdini.
 	22.12.2012
 	Add temp environment.
+	23.11.2013
+	Fix some errors

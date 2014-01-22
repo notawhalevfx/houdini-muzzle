@@ -15,14 +15,16 @@ Add non destructive parameter adding. If some parameterers exist muzzle only add
 Add other init env like in source_houdini script. Add information about version of Houdini.
 22.12.2012
 Add temp environment.
+23.11.2013
+Fix some errors
 '''
 
 # Out debug information in Terminal
 DEBUG = True
 # Release version. If you don't write build then muzzle will start last installed build
-HOUDINI_MAJOR_RELEASE = 12
-HOUDINI_MINOR_RELEASE = 1
-HOUDINI_BUILD_VERSION = None#142
+HOUDINI_MAJOR_RELEASE = 13
+HOUDINI_MINOR_RELEASE = 0
+HOUDINI_BUILD_VERSION = None#237
 # Flags for startup
 HOUDINI_DEFAULT_FLAG = ["-foreground"]
 # Install path and job path
@@ -57,7 +59,7 @@ Replacing symbols when houdini starting:
 	For example, if HOUDINI_VEX_PATH is "$HOME/vex/^", when loading Surface shaders it will expand 
 	to "$HOME/vex/Surface".
 
-More info: http://www.sidefx.com/docs/houdini12.1/basics/config_env
+More info: http://www.sidefx.com/docs/houdini13.0/basics/config_env
 '''
 HOUDINI_PARAM = dict() #Don't comment this line
 HOUDINI_PARAM['HOUDINI_OTLSCAN_PATH'] = HOUDINI_PROD_PATH + "/otls:@/otls"
@@ -68,7 +70,10 @@ HOUDINI_PARAM['HOUDINI_DSO_PATH'] = HOUDINI_PROD_PATH + "/dso:@/dso"
 #HOUDINI_PARAM['HOUDINI_UI_ICON_PATH'] = HOUDINI_PROD_PATH+"/icon:@/^"
 #HOUDINI_PARAM['HOUDINI_TOOLBAR_PATH'] = HOUDINI_PROD_PATH+"/toolbar:@/toolbar"
 
-'''Code'''
+### Editor choice
+#HOUDINI_PARAM['EDITOR'] = "sublime_text"
+
+'''Below this line code. Don't touch it '''
 import os,sys,subprocess,re
 
 def houdiniNameReturn(hdn): return hdn['base'] + hdn['major']+"."+hdn['minor']+"."+hdn['build']
@@ -116,14 +121,15 @@ def getandCheckHoudiniBuild():
 		for app in apps:
 			if re.match(HB,app['major']+"."+app['minor']+"."+app['build']):
 				return houdiniNameReturn(app)
-			else:
-				someError("Can`t found Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION))
-	elif HOUDINI_MAJOR_RELEASE and HOUDINI_MINOR_RELEASE != None and HOUDINI_BUILD_VERSION == None:
+		someError("Can`t found Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION))
+	elif HOUDINI_MAJOR_RELEASE != None and HOUDINI_MINOR_RELEASE != None and HOUDINI_BUILD_VERSION == None:
 		'''If haven`t only build parameter'''
 		max_app = apps[0]
 		for app in apps[1:]:
 			if max_app['build'] < app['build']:
-				max_app = app
+				if max_app['minor'] <= app['minor']:
+					if max_app['major'] <= app['major']:
+						max_app = app
 		HOUDINI_BUILD_VERSION = max_app['build']
 		return houdiniNameReturn(max_app)
 	elif HOUDINI_MAJOR_RELEASE == None and HOUDINI_MINOR_RELEASE == None and HOUDINI_BUILD_VERSION == None:
