@@ -17,6 +17,8 @@ Add other init env like in source_houdini script. Add information about version 
 Add temp environment.
 23.11.2013
 Fix some errors
+06.02.2014
+Add Install script
 '''
 
 # Out debug information in Terminal
