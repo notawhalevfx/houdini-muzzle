@@ -6,7 +6,7 @@ not.a.whale [at] gmail.com
 Skype: notawhale
 
 Changelog:
-	Version:0.39
+	Version:0.40
 	03.12.2012
 	Start write this muzzle
 	04.12.2012
@@ -22,3 +22,5 @@ Changelog:
 	Fix some errors
 	06.02.2014
 	Add Install script
+	12.02.2014
+	Move houdini startup script in function

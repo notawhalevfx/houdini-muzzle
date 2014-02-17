@@ -158,6 +158,27 @@ def addEnv(params):
 				os.environ[param] = params[param]
 		if DEBUG:
 			print "$" + param + ": " + os.environ[param]
+
+def houdiniRun(houdiniFlags=None,hippath=None):
+	'''Function for starting houdini in subprocess'''
+	while True:
+		print "Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
+		sub = subprocess.Popen(HOUDINI_START_COMMAND,stdout=subprocess.PIPE)
+		if DEBUG:
+			print "$HFS: " + HFS
+			print "$HB: " + HB
+			print "$JOB: " + JOB
+			print "Start Command: " + " ".join(HOUDINI_START_COMMAND)
+		if sub.wait() != 0:
+			'''If errot then print information it'''
+			pressEnter()
+			errorOutput = str(sub.communicate())
+			print errorOutput
+			return False
+		else:
+			return True
+
+
 # Inizialize $HFS
 HFS = "%s/%s"%(
 	HOUDINI_INSTALL_PATH,
@@ -191,13 +212,4 @@ HOUDINI_START_COMMAND = ['%s/houdini'%HB] + HOUDINI_DEFAULT_FLAG + sys.argv[1:]
 '''Application Run'''
 if __name__ == '__main__':
 	'''If this is startup script'''
-	print "Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
-	sub = subprocess.Popen(HOUDINI_START_COMMAND,stdout=subprocess.PIPE)
-	if DEBUG:
-		print "$HFS: " + HFS
-		print "$HB: " + HB
-		print "$JOB: " + JOB
-		print "Start Command: " + " ".join(HOUDINI_START_COMMAND)
-	if sub.wait() != 0:
-		'''If errot then print information it'''
-		pressEnter()
+	houdiniRun()
