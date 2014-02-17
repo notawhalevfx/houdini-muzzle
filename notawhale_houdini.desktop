@@ -1,5 +1,7 @@
+#!/usr/bin/env xdg-open
 [Desktop Entry]
 Name=Houdini FX
+Name[en_US]=Houdini FX
 GenericName=Houdini FX
 Comment=3D Animation Tools
 Exec=houdini %F
@@ -8,4 +10,4 @@ Type=Application
 Terminal=true
 Encoding=UTF-8
 Categories=Graphics;
-Name[en_US]=notawhale_houdini.desktop
+
