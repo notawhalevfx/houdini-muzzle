@@ -16,3 +16,4 @@ print IfnotExistPathCreateIt("%s/.local/share/icons"%home)
 shutil.copy2("./houdini_logo.png","%s/.local/share/icons"%home)
 print IfnotExistPathCreateIt("%s/.local/share/applications"%home)
 shutil.copy2("./notawhale_houdini.desktop","%s/.local/share/applications"%home)
+print "Install complete"
