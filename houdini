@@ -163,9 +163,6 @@ def houdiniRun(houdiniFlags=None,hippath=None):
 		if sub.wait() != 0:
 			'''If errot then print information it'''
 			errorOut = str(sub.communicate())
-			print "this"
-			print errorOut
-			print "this"
 			res = re.search(".* (?P<hiplink>(([a-zA-Z0-9._/].*).hip))",errorOut)
 			if res.group("hiplink") != None:
 				answer = raw_input("Houdini error\nFor start file: %s\n\tpress 's'\n\tpress 'n' to start nevercook mode\npush anykey to close terminal"%res.group("hiplink"))
