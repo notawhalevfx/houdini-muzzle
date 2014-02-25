@@ -26,3 +26,5 @@ Changelog:
 	Move houdini startup script in function
 	24.02.2014
 	Add start houdini after crash
+	25.02.2014
+	Add ability to run Houdini without script

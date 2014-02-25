@@ -165,16 +165,17 @@ def houdiniRun(houdiniFlags=None,hippath=None):
 			errorOut = str(sub.communicate())
 			res = re.search(".* (?P<hiplink>(([a-zA-Z0-9._/].*).hip))",errorOut)
 			if res.group("hiplink") != None:
-				answer = raw_input("Houdini error\nFor start file: %s\n\tpress 's'\n\tpress 'n' to start nevercook mode\npush anykey to close terminal"%res.group("hiplink"))
+				answer = raw_input("Houdini error\nRerun Houdini press 'r'\nFor start file: %s\n\tpress 's'\n\tpress 'n' to start nevercook mode\npush anykey to close terminal"%res.group("hiplink"))
 				if answer == "s":
 					houdiniRun(hippath=res.group("hiplink"))
 				elif answer == "n":
 					houdiniRun(houdiniFlags="-n",hippath=res.group("hiplink"))
+				elif answer == "r":
+					houdiniRun()
 				else:
 					return False
 		else:
 			return True
-
 
 # Inizialize $HFS
 HFS = "%s/%s"%(
