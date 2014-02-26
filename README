@@ -28,3 +28,5 @@ Changelog:
 	Add start houdini after crash
 	25.02.2014
 	Add ability to rerun Houdini without script
+	26.02.2014
+	Add abulity to preinit script from other folder

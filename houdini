@@ -21,6 +21,9 @@ JOB = "/home/notawhale/Projects"
 #Houdini production folder
 HOUDINI_PROD_PATH = "$JOB/Library"
 
+#Script to pre init from other directory
+PREINIT_SCRIPT=None#"$JOB/Library/houdini"
+
 '''User parameters for Houdini. If some parameter not need initialiaze comment it '''
 '''
 Replacing symbols when houdini starting:
@@ -60,7 +63,12 @@ HOUDINI_PARAM['HOUDINI_DSO_PATH'] = HOUDINI_PROD_PATH + "/dso:@/dso"
 #HOUDINI_PARAM['EDITOR'] = "sublime_text"
 
 '''Below this line code. Don't touch it '''
-import os,sys,subprocess,re
+import os,sys,subprocess,re,sys
+
+'''If preinit script exist then init it'''
+if PREINIT_SCRIPT != None: 
+	sys.path.append(PREINIT_SCRIPT)
+	import houdini
 
 def houdiniNameReturn(hdn): return hdn['base'] + hdn['major']+"."+hdn['minor']+"."+hdn['build']
 def pressEnter(): raw_input("Press Enter to continue")
