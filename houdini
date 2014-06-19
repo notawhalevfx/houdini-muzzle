@@ -157,6 +157,7 @@ def addEnv(params):
 
 def houdiniRun(houdiniFlags=None,hippath=None):
 	'''Function for starting houdini in subprocess'''
+	anwer = None
 	while True:
 		print "Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
 		'''Generate executable string'''
