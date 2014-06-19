@@ -18,6 +18,7 @@ HOUDINI_INSTALL_PATH = "/opt"
 # $JOB - A custom variable that determines where your jobs are located.
 JOB = "/home/notawhale/Projects"
 
+
 #Houdini production folder
 HOUDINI_PROD_PATH = "$JOB/Library"
 
@@ -54,7 +55,10 @@ HOUDINI_PARAM['HOUDINI_DSO_PATH'] = HOUDINI_PROD_PATH + "/dso:@/dso"
 #HOUDINI_PARAM['HOUDINI_VEX_PATH'] = HOUDINI_PROD_PATH + "/vex^:@/vex/^"
 #HOUDINI_PARAM['HOUDINI_GALLERY_PATH'] = HOUDINI_PROD_PATH+"/gallery:@/gallery"
 #HOUDINI_PARAM['HOUDINI_UI_ICON_PATH'] = HOUDINI_PROD_PATH+"/icon:@/^"
-#HOUDINI_PARAM['HOUDINI_TOOLBAR_PATH'] = HOUDINI_PROD_PATH+"/toolbar:@/toolbar"
+HOUDINI_PARAM['HOUDINI_TOOLBAR_PATH'] = HOUDINI_PROD_PATH+"/toolbar:@/toolbar"
+
+# Custom env variable
+HOUDINI_PARAM['PRJ'] = JOB
 
 ### Editor choice
 #HOUDINI_PARAM['EDITOR'] = "sublime_text"
@@ -155,9 +159,9 @@ def houdiniRun(houdiniFlags=None,hippath=None):
 			print "Start Command: " + " ".join(HOUDINI_START_COMMAND)
 		if sub.wait() != 0:
 			'''If errot then print information it'''
-			pressEnter()
 			errorOutput = str(sub.communicate())
-			print errorOutput
+			print errorOutput + "\nTest"
+			pressEnter()
 			return False
 		else:
 			return True
