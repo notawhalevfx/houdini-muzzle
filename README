@@ -6,7 +6,7 @@ not.a.whale [at] gmail.com
 Skype: notawhale
 
 Changelog:
-	Version:0.41
+	Version:0.412
 	03.12.2012
 	Start write this muzzle
 	04.12.2012
@@ -32,3 +32,5 @@ Changelog:
 	Add abulity to preinit script from other folder
 	19.06.2014
 	Add possible add custom env variable
+	02.07.2014
+	Fix some bug

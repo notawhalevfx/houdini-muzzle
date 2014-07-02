@@ -157,38 +157,37 @@ def addEnv(params):
 
 def houdiniRun(houdiniFlags=None,hippath=None):
 	'''Function for starting houdini in subprocess'''
-	anwer = None
-	while True:
-		print "Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
-		'''Generate executable string'''
-		st_cmd = HOUDINI_START_COMMAND
-		if houdiniFlags != None:
-			st_cmd.append(houdiniFlags)
-		if hippath != None:
-			st_cmd.append(hippath)
-		print st_cmd
-		sub = subprocess.Popen(st_cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
-		if DEBUG:
-			print "$HFS: " + HFS
-			print "$HB: " + HB
-			print "$JOB: " + JOB
-			print "Start Command: " + " ".join(HOUDINI_START_COMMAND)
-		if sub.wait() != 0:
-			'''If errot then print information it'''
-			errorOut = str(sub.communicate())
-			res = re.search(".* (?P<hiplink>(([a-zA-Z0-9._/].*).hip))",errorOut)
-			if res.group("hiplink") != None:
-				answer = raw_input("Houdini error\nRerun Houdini press 'r'\nFor start file: %s\n\tpress 's'\n\tpress 'n' to start nevercook mode\npush anykey to close terminal"%res.group("hiplink"))
-				if answer == "s":
-					houdiniRun(hippath=res.group("hiplink"))
-				elif answer == "n":
-					houdiniRun(houdiniFlags="-n",hippath=res.group("hiplink"))
-				elif answer == "r":
-					houdiniRun()
-				else:
-					return False
-		else:
-			return True
+	print "Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION)
+	'''Generate executable string'''
+	st_cmd = HOUDINI_START_COMMAND
+	if houdiniFlags != None:
+		st_cmd.append(houdiniFlags)
+	if hippath != None:
+		st_cmd.append(hippath)
+	print st_cmd
+	sub = subprocess.Popen(st_cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
+	if DEBUG:
+		print "$HFS: " + HFS
+		print "$HB: " + HB
+		print "$JOB: " + JOB
+		print "Start Command: " + " ".join(HOUDINI_START_COMMAND)
+	if sub.wait() != 0:
+		'''If errot then print information it'''
+		errorOut = str(sub.communicate())
+		res = re.search(".* (?P<hiplink>(([a-zA-Z0-9._/].*).hip))",errorOut)
+		if res.group("hiplink") != None:
+			answer = raw_input("Houdini error\nRerun Houdini press 'r'\nFor start file: %s\n\tpress 's'\n\tpress 'n' to start nevercook mode\npush anykey to close terminal: "%res.group("hiplink"))
+			if answer == "s":
+				houdiniRun(hippath=res.group("hiplink"))
+			elif answer == "n":
+				houdiniRun(houdiniFlags="-n",hippath=res.group("hiplink"))
+			elif answer == "r":
+				houdiniRun()
+			else:
+				return False
+	else:
+		return True
+	return True
 
 # Inizialize $HFS
 HFS = "%s/%s"%(
