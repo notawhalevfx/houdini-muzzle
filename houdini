@@ -8,9 +8,9 @@ Skype: notawhale
 # Out debug information in Terminal
 DEBUG = True
 # Release version. If you don't write build then muzzle will start last installed build
-HOUDINI_MAJOR_RELEASE = 13
+HOUDINI_MAJOR_RELEASE = 16
 HOUDINI_MINOR_RELEASE = 0
-HOUDINI_BUILD_VERSION = None#237
+HOUDINI_BUILD_VERSION = None
 # Flags for startup
 HOUDINI_DEFAULT_FLAG = ["-foreground"]
 # Install path and job path
