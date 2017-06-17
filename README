@@ -7,30 +7,30 @@ Skype: notawhale
 
 Changelog:
 	Version:0.412
-	03.12.2012
-	Start write this muzzle
+	02.07.2014
+	Fix some bug
+	19.06.2014
+	Add possible add custom env variable
+	26.02.2014
+	Add abulity to preinit script from other folder
+	25.02.2014
+	Add ability to rerun Houdini without script
+	24.02.2014
+	Add start houdini after crash
+	12.02.2014
+	Move houdini startup script in function
+	06.02.2014
+	Add Install script
+	23.11.2013
+	Fix some errors
+	22.12.2012
+	Add temp environment.
+	15.12.2012
+	Add other init env like in source_houdini script. Add information about version of Houdini.
+	08.12.2012
+	Add non destructive parameter adding. If some parameterers exist muzzle only add new parameters.
 	04.12.2012
 	Add support without choise version of Houdini
 	Add user parameters for production
-	08.12.2012
-	Add non destructive parameter adding. If some parameterers exist muzzle only add new parameters.
-	15.12.2012
-	Add other init env like in source_houdini script. Add information about version of Houdini.
-	22.12.2012
-	Add temp environment.
-	23.11.2013
-	Fix some errors
-	06.02.2014
-	Add Install script
-	12.02.2014
-	Move houdini startup script in function
-	24.02.2014
-	Add start houdini after crash
-	25.02.2014
-	Add ability to rerun Houdini without script
-	26.02.2014
-	Add abulity to preinit script from other folder
-	19.06.2014
-	Add possible add custom env variable
-	02.07.2014
-	Fix some bug
+	03.12.2012
+	Start write this muzzle
