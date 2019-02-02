@@ -8,7 +8,7 @@ Skype: notawhale
 # Out debug information in Terminal
 DEBUG = True
 # Release version. If you don't write build then muzzle will start last installed build
-HOUDINI_MAJOR_RELEASE = 16
+HOUDINI_MAJOR_RELEASE = 17
 HOUDINI_MINOR_RELEASE = 0
 HOUDINI_BUILD_VERSION = None
 # Flags for startup
@@ -89,7 +89,7 @@ def foundHoudiniInDir():
 	'''Return dict with Houdini directors'''
 	apps = []
 	for ver in os.listdir(HOUDINI_INSTALL_PATH):
-		if re.match(u"(hfs)([\d]{1,2})[.]([\d]{1})[.]([\d]{1,3})",ver):
+		if re.match(u"(hfs)([\d]{1,2})[.]([\d]{1})[.]([\d]{1,4})",ver):
 			m = re.match(u"(?P<base>[a-zA-Z]{0,3})(?P<major>[\d]{1,2})[.](?P<minor>[\d]{1})[.](?P<build>[\d]{1,3})",ver)
 			apsPrm = dict()
 			apsPrm['base'] = m.group('base')
@@ -109,6 +109,14 @@ def returnOnlyMax(mas,search):
 			apps = [app[search]]
 	return apps
 
+def returnExcludeVersion(mas,current,search):
+	'''Search max major/minor/build and return max indentifical major/minor/build'''
+	apps = []
+	for app in mas:
+		if int(current) == int(app[search]):
+			apps.append(app)
+	return apps
+
 def getandCheckHoudiniBuild():
 	"""Founding houdini max build/release  if houdini version parameter is None"""
 	global HOUDINI_MAJOR_RELEASE
@@ -124,14 +132,13 @@ def getandCheckHoudiniBuild():
 		someError("Can`t found Houdini %s.%s.%s"%(HOUDINI_MAJOR_RELEASE, HOUDINI_MINOR_RELEASE, HOUDINI_BUILD_VERSION))
 	elif HOUDINI_MAJOR_RELEASE != None and HOUDINI_MINOR_RELEASE != None and HOUDINI_BUILD_VERSION == None:
 		'''If haven`t only build parameter'''
-		max_app = apps[0]
-		for app in apps[1:]:
-			if max_app['build'] < app['build']:
-				if max_app['minor'] <= app['minor']:
-					if max_app['major'] <= app['major']:
-						max_app = app
-		HOUDINI_BUILD_VERSION = max_app['build']
-		return houdiniNameReturn(max_app)
+		apps = returnExcludeVersion(apps,HOUDINI_MAJOR_RELEASE,'major')
+		apps = returnExcludeVersion(apps,HOUDINI_MINOR_RELEASE,'minor')
+		apps = returnOnlyMax(apps,'build')
+		HOUDINI_MAJOR_RELEASE = apps[0]['major']
+		HOUDINI_MINOR_RELEASE = apps[0]['minor']
+		HOUDINI_BUILD_VERSION = apps[0]['build']
+		return houdiniNameReturn(apps[0])
 	elif HOUDINI_MAJOR_RELEASE == None and HOUDINI_MINOR_RELEASE == None and HOUDINI_BUILD_VERSION == None:
 		'''If haven`t information about version of Houdini'''
 		apps = returnOnlyMax(apps,'major')
