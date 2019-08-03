@@ -9,7 +9,7 @@ Skype: notawhale
 DEBUG = True
 # Release version. If you don't write build then muzzle will start last installed build
 HOUDINI_MAJOR_RELEASE = 17
-HOUDINI_MINOR_RELEASE = 0
+HOUDINI_MINOR_RELEASE = 5
 HOUDINI_BUILD_VERSION = None
 # Flags for startup
 HOUDINI_DEFAULT_FLAG = ["-foreground"]
