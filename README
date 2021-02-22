@@ -1,32 +1,12 @@
-Houdini Muzzle
-About how to install read in INSTALL file.
+# Houdini Muzzle
+Pre-run script to configure custom environment variables and more for Sidefx Houdini.
 
-Changelog:
-	Version:0.412
-	02.07.2014
-	Fix some bug
-	19.06.2014
-	Add possible add custom env variable
-	26.02.2014
-	Add abulity to preinit script from other folder
-	25.02.2014
-	Add ability to rerun Houdini without script
-	24.02.2014
-	Add start houdini after crash
-	12.02.2014
-	Move houdini startup script in function
-	06.02.2014
-	Add Install script
-	23.11.2013
-	Fix some errors
-	22.12.2012
-	Add temp environment.
-	15.12.2012
-	Add other init env like in source_houdini script. Add information about version of Houdini.
-	08.12.2012
-	Add non destructive parameter adding. If some parameterers exist muzzle only add new parameters.
-	04.12.2012
-	Add support without choise version of Houdini
-	Add user parameters for production
-	03.12.2012
-	Start write this muzzle
+## How to Install:
+
+	Automatic mode:
+		Run install.py
+
+	Manual mode:
+		Copy houdini to ~/.local/bin or ~/bin
+		Copy houdini_logo.png to ~/.local/share/icons/
+		Copy notawhale_houdini.desktop to ~/.local/share/applications/

@@ -1,8 +1,0 @@
-How to Install
-	Automatic:
-		Run install.py
-
-	Manuall:
-		Copy houdini to ~/.local/bin or ~/bin
-		Copy houdini_logo.png to ~/.local/share/icons/
-		Copy notawhale_houdini.desktop to ~/.local/share/applications/

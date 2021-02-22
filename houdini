@@ -1,14 +1,11 @@
 #!/usr/bin/env python
-'''
-Nikita Musatov
-not.a.whale [at] gmail.com
-Skype: notawhale
-'''
+
 
 # Out debug information in Terminal
 DEBUG = True
+
 # Release version. If you don't write build then muzzle will start last installed build
-HOUDINI_MAJOR_RELEASE = 17
+HOUDINI_MAJOR_RELEASE = 18
 HOUDINI_MINOR_RELEASE = 5
 HOUDINI_BUILD_VERSION = None
 # Flags for startup
@@ -59,6 +56,7 @@ HOUDINI_PARAM['HOUDINI_DSO_PATH'] = HOUDINI_PROD_PATH + "/dso:@/dso"
 #HOUDINI_PARAM['HOUDINI_GALLERY_PATH'] = HOUDINI_PROD_PATH+"/gallery:@/gallery"
 #HOUDINI_PARAM['HOUDINI_UI_ICON_PATH'] = HOUDINI_PROD_PATH+"/icon:@/^"
 HOUDINI_PARAM['HOUDINI_TOOLBAR_PATH'] = HOUDINI_PROD_PATH+"/toolbar:@/toolbar"
+HOUDINI_PARAM['LD_LIBRARY_PATH'] = HOUDINI_PROD_PATH+"/lib"
 
 # Custom env variable
 HOUDINI_PARAM['PRJ'] = JOB
