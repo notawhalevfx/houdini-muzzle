@@ -9,11 +9,11 @@ def IfnotExistPathCreateIt(path):
 	return False
 
 """check folders"""
-print IfnotExistPathCreateIt("%s/.local/bin"%home)
+print(IfnotExistPathCreateIt("%s/.local/bin"%home))
 shutil.copy2("./houdini","%s/.local/bin"%home)
 
-print IfnotExistPathCreateIt("%s/.local/share/icons"%home)
+print(IfnotExistPathCreateIt("%s/.local/share/icons"%home))
 shutil.copy2("./houdini_logo.png","%s/.local/share/icons"%home)
-print IfnotExistPathCreateIt("%s/.local/share/applications"%home)
+print(IfnotExistPathCreateIt("%s/.local/share/applications"%home))
 shutil.copy2("./notawhale_houdini.desktop","%s/.local/share/applications"%home)
-print "Install complete"
+print("Install complete")
