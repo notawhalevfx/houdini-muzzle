@@ -5,8 +5,8 @@
 DEBUG = True
 
 # Release version. If you don't write build then muzzle will start last installed build
-HOUDINI_MAJOR_RELEASE = 18
-HOUDINI_MINOR_RELEASE = 5
+HOUDINI_MAJOR_RELEASE = 19
+HOUDINI_MINOR_RELEASE = 0
 HOUDINI_BUILD_VERSION = None
 # Flags for startup
 HOUDINI_DEFAULT_FLAG = ["-foreground"]
@@ -63,6 +63,9 @@ HOUDINI_PARAM['PRJ'] = JOB
 
 ### Editor choice
 #HOUDINI_PARAM['EDITOR'] = "sublime_text"
+
+### Extra parameters to make it works on Fedora 35
+HOUDINI_PARAM['LD_PRELOAD'] = "/usr/lib64/libc_malloc_debug.so.0"
 
 '''Below this line code. Don't touch it '''
 import os,sys,subprocess,re,sys
